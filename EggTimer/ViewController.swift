@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
     
     
+    var player: AVAudioPlayer!
     var timer = Timer()
     let eggTimes = ["Soft":3, "Medium":4, "Hard":7]
     var totalTime = 0
@@ -37,14 +39,17 @@ class ViewController: UIViewController {
     {
         
         if secondsPassed < totalTime{
-            let percentage = Float(secondsPassed) / Float(totalTime);
-            progress.progress = percentage
+            progress.progress = Float(secondsPassed) / Float(totalTime);
             secondsPassed += 1
         }
         else {
             timer.invalidate()
             progress.progress = 1.0;
             labelTitle.text = "DONE"
+            
+            let url = Bundle.main.url(forResource: "alarm_sound", withExtension: "mp3")
+            player = try! AVAudioPlayer(contentsOf: url!)
+            player.play()
         }
     }
     
